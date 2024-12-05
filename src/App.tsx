@@ -1,4 +1,4 @@
-import { useRef, useEffect } from 'react';
+import { useRef, useEffect } from "react";
 import { Box } from "@chakra-ui/react";
 
 function App() {
@@ -21,7 +21,7 @@ function App() {
   }
 
   return (
-    <Box w="full" h="full">
+    <Box w="100vw" h="100vh">
       {/* @ts-ignore */}
       <rendley-video-editor
         ref={videoEditorRef}
