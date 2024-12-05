@@ -1,0 +1,4 @@
+import { h } from "@stencil/core";
+export const TransitionClipIcon = () => {
+    return (h("svg", { width: "12", height: "12", viewBox: "0 0 13 13", fill: "none", xmlns: "http://www.w3.org/2000/svg" }, h("path", { d: "M2 4L4.5 6.5L2 9V4Z", stroke: "white", "stroke-linecap": "round", "stroke-linejoin": "round" }), h("path", { d: "M11 4L8.5 6.5L11 9V4Z", stroke: "white", "stroke-linecap": "round", "stroke-linejoin": "round" }), h("path", { d: "M6.5 10.5V11.5", stroke: "white", "stroke-linecap": "round", "stroke-linejoin": "round" }), h("path", { d: "M6.5 7.5V8.5", stroke: "white", "stroke-linecap": "round", "stroke-linejoin": "round" }), h("path", { d: "M6.5 4.5V5.5", stroke: "white", "stroke-linecap": "round", "stroke-linejoin": "round" }), h("path", { d: "M6.5 1.5V2.5", stroke: "white", "stroke-linecap": "round", "stroke-linejoin": "round" })));
+};

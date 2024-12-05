@@ -1,0 +1,4 @@
+import { h } from "@stencil/core";
+export const TypeIcon = () => {
+    return (h("svg", { width: "21", height: "20", viewBox: "0 0 21 20", fill: "none", xmlns: "http://www.w3.org/2000/svg" }, h("path", { d: "M3 12.5002L6.33333 5.8335L9.66667 12.5002", stroke: "currentColor", "stroke-width": "1.25", "stroke-linecap": "round", "stroke-linejoin": "round" }), h("path", { d: "M3.83331 10.8335H8.83331", stroke: "currentColor", "stroke-width": "1.25", "stroke-linecap": "round", "stroke-linejoin": "round" }), h("path", { d: "M15.5 12.5C16.8807 12.5 18 11.3807 18 10C18 8.61929 16.8807 7.5 15.5 7.5C14.1193 7.5 13 8.61929 13 10C13 11.3807 14.1193 12.5 15.5 12.5Z", stroke: "currentColor", "stroke-width": "1.25", "stroke-linecap": "round", "stroke-linejoin": "round" }), h("path", { d: "M18 7.5V12.5", stroke: "currentColor", "stroke-width": "1.25", "stroke-linecap": "round", "stroke-linejoin": "round" })));
+};

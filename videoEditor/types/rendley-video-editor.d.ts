@@ -1,0 +1,32 @@
+import { Engine } from "@rendley/sdk";
+import { EventEmitter } from "./stencil-public-runtime";
+import { ThemeVariants } from "./store/ApplicationStore";
+export declare class RendleyVideoEditor {
+    theme?: ThemeVariants;
+    licensename?: string;
+    licensekey?: string;
+    pexelsapikey?: string;
+    giphyapikey?: string;
+    filtersPath?: string;
+    effectsPath?: string;
+    transitionsPath?: string;
+    titlesPath?: string;
+    subtitlesStylesPath?: string;
+    onReady?: EventEmitter<void>;
+    onError?: EventEmitter<unknown>;
+    onRenderSuccess?: EventEmitter<string>;
+    onRenderError?: EventEmitter<string>;
+    isLoading: boolean;
+    isRendering: boolean;
+    el?: HTMLElement;
+    private disposeAutorun?;
+    componentWillLoad(): void;
+    componentDidLoad(): void;
+    disconnectedCallback(): void;
+    destroy(): Promise<void>;
+    init(): Promise<null | undefined>;
+    getElement(): Promise<HTMLElement | undefined>;
+    getEngine(): Promise<typeof Engine>;
+    handleDropFiles(files: FileList): Promise<void>;
+    render(): any;
+}

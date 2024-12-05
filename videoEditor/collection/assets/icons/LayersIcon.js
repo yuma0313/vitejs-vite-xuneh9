@@ -1,0 +1,4 @@
+import { h } from "@stencil/core";
+export const LayersIcon = () => {
+    return (h("svg", { width: "21", height: "20", viewBox: "0 0 21 20", fill: "none", xmlns: "http://www.w3.org/2000/svg" }, h("path", { d: "M5.08335 7.0835L8.00002 10.0002L5.08335 12.9168L2.16669 10.0002L5.08335 7.0835Z", stroke: "black", "stroke-width": "1.25", "stroke-linecap": "round", "stroke-linejoin": "round" }), h("path", { d: "M10.5 1.6665L13.4166 4.58317L10.5 7.49984L7.58331 4.58317L10.5 1.6665Z", stroke: "black", "stroke-width": "1.25", "stroke-linecap": "round", "stroke-linejoin": "round" }), h("path", { d: "M15.9167 7.0835L18.8333 10.0002L15.9167 12.9168L13 10.0002L15.9167 7.0835Z", stroke: "black", "stroke-width": "1.25", "stroke-linecap": "round", "stroke-linejoin": "round" }), h("path", { d: "M10.5 12.5L13.4166 15.4167L10.5 18.3333L7.58331 15.4167L10.5 12.5Z", stroke: "black", "stroke-width": "1.25", "stroke-linecap": "round", "stroke-linejoin": "round" })));
+};
