@@ -34,7 +34,7 @@ export class StockMediaService {
             // 各色のフォルダから画像を取得
             for (const [color, range] of Object.entries(arrowRanges)) {
                 for (let i = range.start; i <= range.end; i++) {
-                    const imageUrl = `${this.gcsBaseUrl}/arrows/${color}/Arrow ${i}.png`;
+                    const imageUrl = `${this.gcsBaseUrl}/arrows/${color}/Arrow ${i}.webp`;
                     photos.push({
                         src: {
                             original: imageUrl,
@@ -79,21 +79,11 @@ export class StockMediaService {
     async getGCSTexts() {
         try {
             // テキスト画像の名前を定義
-            const textNames = [
-                "alert",
-                "check",
-                "confirm",
-                "danger",
-                "need-confirmation",
-                "ng",
-                "ok",
-                "point",
-                "safety",
-            ];
+            const textNames = ["alert", "check", "confirm", "danger", "need-confirmation", "ng", "ok", "point", "safety"];
             const photos = [];
             // 各テキスト画像を取得
             textNames.forEach((name, index) => {
-                const imageUrl = `${this.gcsBaseUrl}/texts/${name}.png`;
+                const imageUrl = `${this.gcsBaseUrl}/texts/${name}.webp`;
                 photos.push({
                     src: {
                         original: imageUrl,
@@ -145,7 +135,7 @@ export class StockMediaService {
             // 各色のフォルダから画像を取得
             for (const color of colors) {
                 for (const shape of shapeTypes) {
-                    const imageUrl = `${this.gcsBaseUrl}/shapes/${color}/${shape}.png`;
+                    const imageUrl = `${this.gcsBaseUrl}/shapes/${color}/${shape}.webp`;
                     photos.push({
                         src: {
                             original: imageUrl,

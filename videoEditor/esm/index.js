@@ -1,4 +1,4 @@
-export { R as RendleyVideoEditor } from './rendley-video-editor-95d60b3c.js';
+export { R as RendleyVideoEditor } from './rendley-video-editor-6a2f9ee5.js';
 import './index-f9f850bb.js';
 import './RendleyStore-b5f665fd.js';
 import './ApplicationStore-824bdfff.js';

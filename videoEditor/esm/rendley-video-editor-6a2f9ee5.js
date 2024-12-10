@@ -1,17 +1,15 @@
-'use strict';
-
-const index = require('./index-2d7e747d.js');
-const RendleyStore = require('./RendleyStore-63f6242b.js');
-const ApplicationStore = require('./ApplicationStore-a449587b.js');
-const clsx = require('./clsx-080228aa.js');
-const RendleyService = require('./RendleyService-b0901392.js');
-const TimelineStore = require('./TimelineStore-998a1eff.js');
+import { r as registerInstance, c as createEvent, h, H as Host, g as getElement } from './index-f9f850bb.js';
+import { R as RendleyStore, E as Engine, M as MediaDataStatusEnum, T as TextClip, a as EventsEnum, C as CANVAS_ID, F as FILTERS_PATH_CDN, b as EFFECTS_PATH_CDN, c as TRANSITIONS_PATH_CDN, d as TITLES_PATH_CDN, S as SUBTITLES_STYLES_PATH_CDN } from './RendleyStore-b5f665fd.js';
+import { T as Tn, A as ApplicationStore, I as It } from './ApplicationStore-824bdfff.js';
+import { c as clsx } from './clsx-1afe6a70.js';
+import { R as RendleyService } from './RendleyService-23f7521e.js';
+import { T as TimelineStore } from './TimelineStore-83e3c098.js';
 
 class ContextMenuStoreInstance {
     constructor() {
         this.position = null;
         this.options = [];
-        ApplicationStore.Tn(this);
+        Tn(this);
     }
     show(x, y, options) {
         this.position = { x, y };
@@ -77,13 +75,13 @@ class ShortcutService {
         ContextMenuStore.hide();
     }
     handleSplit() {
-        return RendleyService.RendleyService.splitAtCurrentTime();
+        return RendleyService.splitAtCurrentTime();
     }
     handleDelete() {
-        return RendleyService.RendleyService.deleteAtCurrentTime();
+        return RendleyService.deleteAtCurrentTime();
     }
     moveClipLeft() {
-        return RendleyService.RendleyService.moveClipLeft();
+        return RendleyService.moveClipLeft();
     }
     destroy() {
         document.removeEventListener("keydown", this.handleKeyDown.bind(this));
@@ -129,7 +127,7 @@ class StockMediaService {
             // 各色のフォルダから画像を取得
             for (const [color, range] of Object.entries(arrowRanges)) {
                 for (let i = range.start; i <= range.end; i++) {
-                    const imageUrl = `${this.gcsBaseUrl}/arrows/${color}/Arrow ${i}.png`;
+                    const imageUrl = `${this.gcsBaseUrl}/arrows/${color}/Arrow ${i}.webp`;
                     photos.push({
                         src: {
                             original: imageUrl,
@@ -174,21 +172,11 @@ class StockMediaService {
     async getGCSTexts() {
         try {
             // テキスト画像の名前を定義
-            const textNames = [
-                "alert",
-                "check",
-                "confirm",
-                "danger",
-                "need-confirmation",
-                "ng",
-                "ok",
-                "point",
-                "safety",
-            ];
+            const textNames = ["alert", "check", "confirm", "danger", "need-confirmation", "ng", "ok", "point", "safety"];
             const photos = [];
             // 各テキスト画像を取得
             textNames.forEach((name, index) => {
-                const imageUrl = `${this.gcsBaseUrl}/texts/${name}.png`;
+                const imageUrl = `${this.gcsBaseUrl}/texts/${name}.webp`;
                 photos.push({
                     src: {
                         original: imageUrl,
@@ -240,7 +228,7 @@ class StockMediaService {
             // 各色のフォルダから画像を取得
             for (const color of colors) {
                 for (const shape of shapeTypes) {
-                    const imageUrl = `${this.gcsBaseUrl}/shapes/${color}/${shape}.png`;
+                    const imageUrl = `${this.gcsBaseUrl}/shapes/${color}/${shape}.webp`;
                     photos.push({
                         src: {
                             original: imageUrl,
@@ -350,12 +338,12 @@ function arrayToMap(array, key) {
 const removeTransitionIfClipsAreNotAdjacent = (clipId, layerId, hasNearby) => {
     if (!hasNearby) {
         // remove transition if clips are not adjacent
-        const transitionId = RendleyStore.RendleyStore.layers[layerId].transitionIds.find((id) => {
-            const transition = RendleyStore.RendleyStore.transitions[id];
+        const transitionId = RendleyStore.layers[layerId].transitionIds.find((id) => {
+            const transition = RendleyStore.transitions[id];
             return transition.startClipId === clipId || transition.endClipId === clipId;
         });
         if (transitionId) {
-            const layer = RendleyStore.Engine.getInstance().getTimeline().getLayerById(layerId);
+            const layer = Engine.getInstance().getTimeline().getLayerById(layerId);
             layer === null || layer === void 0 ? void 0 : layer.removeTransition(transitionId);
         }
     }
@@ -365,20 +353,20 @@ function numberToFixed(number) {
 }
 function updateAdjacency(currentLayerId) {
     var _a, _b;
-    const clipsIds = (_b = (_a = RendleyService.RendleyService.getLayerById(currentLayerId)) === null || _a === void 0 ? void 0 : _a.clipsIds) !== null && _b !== void 0 ? _b : [];
+    const clipsIds = (_b = (_a = RendleyService.getLayerById(currentLayerId)) === null || _a === void 0 ? void 0 : _a.clipsIds) !== null && _b !== void 0 ? _b : [];
     for (let i = 0; i < clipsIds.length; i++) {
         const previousClipId = clipsIds[i - 1];
         const currentClipId = clipsIds[i];
         const nextClipId = clipsIds[i + 1];
-        const currentClip = RendleyService.RendleyService.getClipById(currentClipId);
+        const currentClip = RendleyService.getClipById(currentClipId);
         if (currentClip == null) {
             return;
         }
         let hasPredecessor = false;
         let hasSuccessor = false;
-        const differenceThreshold = numberToFixed(1 / RendleyService.RendleyService.getFps());
+        const differenceThreshold = numberToFixed(1 / RendleyService.getFps());
         if (previousClipId != null) {
-            const prevClip = RendleyService.RendleyService.getClipById(previousClipId);
+            const prevClip = RendleyService.getClipById(previousClipId);
             if (prevClip == null) {
                 return;
             }
@@ -386,7 +374,7 @@ function updateAdjacency(currentLayerId) {
             hasPredecessor = difference < differenceThreshold;
         }
         if (nextClipId != null) {
-            const nextClip = RendleyService.RendleyService.getClipById(nextClipId);
+            const nextClip = RendleyService.getClipById(nextClipId);
             if (nextClip == null) {
                 return;
             }
@@ -394,7 +382,7 @@ function updateAdjacency(currentLayerId) {
             hasSuccessor = difference < differenceThreshold;
         }
         removeTransitionIfClipsAreNotAdjacent(currentClipId, currentLayerId, hasPredecessor || hasSuccessor);
-        RendleyStore.RendleyStore.updateClip(currentClipId, {
+        RendleyStore.updateClip(currentClipId, {
             hasPredecessor,
             hasSuccessor,
         });
@@ -463,17 +451,17 @@ const fontSources = [
 class RendleyBridge {
     constructor() {
         this.handleReady = () => {
-            const timeline = RendleyStore.Engine.getInstance().getTimeline();
-            const display = RendleyStore.Engine.getInstance().getDisplay();
+            const timeline = Engine.getInstance().getTimeline();
+            const display = Engine.getInstance().getDisplay();
             const resolution = display.getResolution();
-            const media = Object.values(RendleyStore.Engine.getInstance().getLibrary().media).reduce((acc, cv) => {
+            const media = Object.values(Engine.getInstance().getLibrary().media).reduce((acc, cv) => {
                 const data = {
                     id: cv.getId(),
                     thumbnail: cv.thumbnail,
                     type: cv.type,
                     filename: cv.filename,
                     duration: cv.duration,
-                    status: RendleyStore.MediaDataStatusEnum.READY,
+                    status: MediaDataStatusEnum.READY,
                 };
                 acc[data.id] = data;
                 return acc;
@@ -488,7 +476,7 @@ class RendleyBridge {
                     duration: cv.getDuration(),
                     trimmedDuration: cv.getTrimmedDuration(),
                     mediaDataId: cv.getMediaId(),
-                    text: cv instanceof RendleyStore.TextClip ? cv.text : "",
+                    text: cv instanceof TextClip ? cv.text : "",
                 };
                 acc[data.id] = data;
                 return acc;
@@ -521,93 +509,93 @@ class RendleyBridge {
                 acc[cv.id] = data;
                 return acc;
             }, {});
-            ApplicationStore.ApplicationStore.setSelectedTransitionId(null);
-            RendleyStore.RendleyStore.setIsPlaying(false);
-            RendleyStore.RendleyStore.setCurrentTime(timeline.currentTime);
-            RendleyStore.RendleyStore.setDisplayResolution(resolution[0], resolution[1]);
-            RendleyStore.RendleyStore.setDisplayBackgroundColor(display.getBackgroundColor());
-            RendleyStore.RendleyStore.setMedia(media);
-            RendleyStore.RendleyStore.setClips(clips);
-            RendleyStore.RendleyStore.setLayers(layers);
-            RendleyStore.RendleyStore.setLayersOrder(timeline.layersOrder);
-            RendleyStore.RendleyStore.setTransitions(transitions);
-            RendleyStore.RendleyStore.setStyles(styles);
-            RendleyStore.RendleyStore.setUpdateTimestamp(Date.now());
-            RendleyStore.RendleyStore.updateTimelineDuration();
-            RendleyStore.RendleyStore.layersOrder.forEach((layerId) => {
+            ApplicationStore.setSelectedTransitionId(null);
+            RendleyStore.setIsPlaying(false);
+            RendleyStore.setCurrentTime(timeline.currentTime);
+            RendleyStore.setDisplayResolution(resolution[0], resolution[1]);
+            RendleyStore.setDisplayBackgroundColor(display.getBackgroundColor());
+            RendleyStore.setMedia(media);
+            RendleyStore.setClips(clips);
+            RendleyStore.setLayers(layers);
+            RendleyStore.setLayersOrder(timeline.layersOrder);
+            RendleyStore.setTransitions(transitions);
+            RendleyStore.setStyles(styles);
+            RendleyStore.setUpdateTimestamp(Date.now());
+            RendleyStore.updateTimelineDuration();
+            RendleyStore.layersOrder.forEach((layerId) => {
                 updateAdjacency(layerId);
             });
         };
         this.handlePlaying = (payload) => {
-            RendleyStore.RendleyStore.setIsPlaying(payload.isPlaying);
+            RendleyStore.setIsPlaying(payload.isPlaying);
         };
         this.handleTime = (currentTime) => {
-            const fitDuration = RendleyService.RendleyService.getEngine().getTimeline().getFitDuration();
-            if (currentTime >= fitDuration && RendleyStore.RendleyStore.isPlaying) {
-                RendleyService.RendleyService.pause();
-                RendleyService.RendleyService.seek(fitDuration);
+            const fitDuration = RendleyService.getEngine().getTimeline().getFitDuration();
+            if (currentTime >= fitDuration && RendleyStore.isPlaying) {
+                RendleyService.pause();
+                RendleyService.seek(fitDuration);
                 return;
             }
-            RendleyStore.RendleyStore.setCurrentTime(currentTime);
+            RendleyStore.setCurrentTime(currentTime);
         };
         this.handleBackgroundUpdated = (payload) => {
-            RendleyStore.RendleyStore.setDisplayBackgroundColor(payload.backgroundColor);
+            RendleyStore.setDisplayBackgroundColor(payload.backgroundColor);
         };
         this.handleResolutionUpdated = (payload) => {
-            RendleyStore.RendleyStore.setDisplayResolution(payload.width, payload.height);
+            RendleyStore.setDisplayResolution(payload.width, payload.height);
         };
         this.handleAddTransition = (payload) => {
-            const layer = RendleyStore.Engine.getInstance().getTimeline().getLayerById(payload.layerId);
+            const layer = Engine.getInstance().getTimeline().getLayerById(payload.layerId);
             if (!layer)
                 return;
             const transition = layer.transitions.find((tx) => tx.id === payload.transitionId);
             if (!transition)
                 return;
-            RendleyStore.RendleyStore.addTransition(transition.serialize());
-            RendleyStore.RendleyStore.updateLayer(layer.id, {
-                transitionIds: [...RendleyStore.RendleyStore.layers[layer.id].transitionIds, transition.id],
+            RendleyStore.addTransition(transition.serialize());
+            RendleyStore.updateLayer(layer.id, {
+                transitionIds: [...RendleyStore.layers[layer.id].transitionIds, transition.id],
             });
         };
         this.handleRemoveTransition = (payload) => {
-            ApplicationStore.ApplicationStore.setSelectedTransitionId(null);
-            RendleyStore.RendleyStore.deleteTransition(payload.transitionId, payload.layerId);
+            ApplicationStore.setSelectedTransitionId(null);
+            RendleyStore.deleteTransition(payload.transitionId, payload.layerId);
         };
         this.handleLayerUpdated = (payload) => {
             var _a;
-            const layer = RendleyService.RendleyService.getLayerById(payload.layerId);
+            const layer = RendleyService.getLayerById(payload.layerId);
             if (!layer)
                 return;
-            RendleyStore.RendleyStore.updateLayer(layer.id, {
+            RendleyStore.updateLayer(layer.id, {
                 clipsIds: layer.clipsIds,
                 transitionIds: layer.transitions.map((tx) => tx.id),
             });
             if (((_a = layer === null || layer === void 0 ? void 0 : layer.clipsIds) === null || _a === void 0 ? void 0 : _a.length) === 0) {
-                RendleyService.RendleyService.deleteLayer(payload.layerId);
+                RendleyService.deleteLayer(payload.layerId);
             }
         };
         this.handleLayerAdded = (payload) => {
-            const timeline = RendleyStore.Engine.getInstance().getTimeline();
+            const timeline = Engine.getInstance().getTimeline();
             const layer = timeline.layers[payload.layerId];
             if (!layer)
                 return;
-            RendleyStore.RendleyStore.addLayer({
+            RendleyStore.addLayer({
                 id: layer.id,
                 clipsIds: layer.clipsIds,
                 transitionIds: layer.transitions.map((tx) => tx.id),
             });
-            RendleyStore.RendleyStore.setLayersOrder(timeline.layersOrder);
+            RendleyStore.setLayersOrder(timeline.layersOrder);
         };
         this.handleLayerRemoved = (payload) => {
-            RendleyStore.RendleyStore.deleteLayer(payload.layerId);
+            RendleyStore.deleteLayer(payload.layerId);
         };
         this.handleLayersOrderUpdated = (payload) => {
-            RendleyStore.RendleyStore.setLayersOrder(RendleyStore.Engine.getInstance().getTimeline().layersOrder);
+            RendleyStore.setLayersOrder(Engine.getInstance().getTimeline().layersOrder);
         };
         this.handleClipUpdated = (payload) => {
-            const clip = RendleyStore.Engine.getInstance().getClipById(payload.clipId);
+            const clip = Engine.getInstance().getClipById(payload.clipId);
             if (!clip)
                 return;
-            RendleyStore.RendleyStore.updateClip(payload.clipId, {
+            RendleyStore.updateClip(payload.clipId, {
                 startTime: clip.getStartTime(),
                 duration: clip.getDuration(),
                 leftTrim: clip.getLeftTrim(),
@@ -616,46 +604,46 @@ class RendleyBridge {
             });
         };
         this.handleClipStyleUpdated = (payload) => {
-            RendleyStore.RendleyStore.updateStyles(payload.clipId, {
+            RendleyStore.updateStyles(payload.clipId, {
                 [payload.property]: payload.value,
             });
         };
         this.handleClipFilterAdded = (payload) => {
-            RendleyStore.RendleyStore.addFilter(payload.clipId, {
+            RendleyStore.addFilter(payload.clipId, {
                 id: payload.filterId,
                 sourceId: payload.sourceId,
             });
         };
         this.handleClipFilterRemoved = (payload) => {
-            RendleyStore.RendleyStore.deleteFilter(payload.clipId, payload.filterId);
+            RendleyStore.deleteFilter(payload.clipId, payload.filterId);
         };
         this.handleClipEffectAdded = (payload) => {
-            RendleyStore.RendleyStore.addEffect(payload.clipId, {
+            RendleyStore.addEffect(payload.clipId, {
                 id: payload.effectId,
                 sourceId: payload.sourceId,
             });
         };
         this.handleClipEffectRemoved = (payload) => {
-            RendleyStore.RendleyStore.deleteEffect(payload.clipId, payload.effectId);
+            RendleyStore.deleteEffect(payload.clipId, payload.effectId);
         };
         this.handleClipUpdatedText = (payload) => {
-            RendleyStore.RendleyStore.updateClip(payload.clipId, {
+            RendleyStore.updateClip(payload.clipId, {
                 text: payload.text,
             });
         };
         this.handleClipAdded = (payload) => {
             var _a, _b;
-            const clip = RendleyStore.Engine.getInstance().getTimeline().getClipById(payload.clipId);
+            const clip = Engine.getInstance().getTimeline().getClipById(payload.clipId);
             if (!clip)
                 return;
-            if (clip instanceof RendleyStore.TextClip) {
+            if (clip instanceof TextClip) {
                 clip.style.setBackgroundColor("#0B2A43");
             }
-            const clipInstance = RendleyStore.Engine.getInstance().getClipById(payload.clipId);
-            RendleyStore.RendleyStore.setClip({
+            const clipInstance = Engine.getInstance().getClipById(payload.clipId);
+            RendleyStore.setClip({
                 id: clip.id,
                 type: clip.type,
-                text: clip instanceof RendleyStore.TextClip ? clip.text : "",
+                text: clip instanceof TextClip ? clip.text : "",
                 startTime: clip.getStartTime(),
                 leftTrim: clip.getLeftTrim(),
                 rightTrim: clip.getRightTrim(),
@@ -665,41 +653,41 @@ class RendleyBridge {
             });
             const styles = (_b = (_a = clipInstance === null || clipInstance === void 0 ? void 0 : clipInstance.style) === null || _a === void 0 ? void 0 : _a.serialize) === null || _b === void 0 ? void 0 : _b.call(_a);
             if (styles) {
-                RendleyStore.RendleyStore.updateStyles(clip.id, styles);
+                RendleyStore.updateStyles(clip.id, styles);
             }
-            RendleyStore.RendleyStore.updateTimelineDuration();
+            RendleyStore.updateTimelineDuration();
         };
         this.handleClipRemoved = (payload) => {
             var _a;
-            const selectedClipId = ApplicationStore.ApplicationStore.selectedClipId;
+            const selectedClipId = ApplicationStore.selectedClipId;
             if (payload.clipId === selectedClipId) {
-                ApplicationStore.ApplicationStore.setSelectedClipId(null);
+                ApplicationStore.setSelectedClipId(null);
             }
-            RendleyStore.RendleyStore.deleteClip(payload.clipId, payload.layerId);
-            const layer = RendleyStore.RendleyStore.layers[payload.layerId];
+            RendleyStore.deleteClip(payload.clipId, payload.layerId);
+            const layer = RendleyStore.layers[payload.layerId];
             if (((_a = layer === null || layer === void 0 ? void 0 : layer.clipsIds) === null || _a === void 0 ? void 0 : _a.length) === 0) {
-                RendleyService.RendleyService.deleteLayer(payload.layerId);
+                RendleyService.deleteLayer(payload.layerId);
             }
             else {
                 updateAdjacency(payload.layerId);
             }
         };
         this.handleLibraryAdded = (payload) => {
-            const mediaData = RendleyStore.Engine.getInstance().getLibrary().getMediaById(payload.mediaDataId);
+            const mediaData = Engine.getInstance().getLibrary().getMediaById(payload.mediaDataId);
             if (mediaData == null) {
                 return;
             }
-            RendleyStore.RendleyStore.addMedia({
+            RendleyStore.addMedia({
                 id: mediaData.getId(),
                 thumbnail: mediaData.thumbnail,
                 type: mediaData.type,
                 filename: mediaData.filename,
                 duration: mediaData.duration,
-                status: RendleyStore.MediaDataStatusEnum.LOADING,
+                status: MediaDataStatusEnum.LOADING,
             });
         };
         this.handleLibraryRemoved = (payload) => {
-            RendleyStore.RendleyStore.deleteMedia(payload.mediaDataId);
+            RendleyStore.deleteMedia(payload.mediaDataId);
         };
         this.handleLibraryMediaUpdated = (payload) => {
             if (payload.status === "ready") {
@@ -707,17 +695,17 @@ class RendleyBridge {
             }
         };
         this.handleLibraryMediaReplaced = (payload) => {
-            const mediaData = RendleyService.RendleyService.getMediaById(payload.mediaDataId);
+            const mediaData = RendleyService.getMediaById(payload.mediaDataId);
             if (mediaData == null) {
                 return;
             }
-            RendleyStore.RendleyStore.addMedia({
+            RendleyStore.addMedia({
                 id: mediaData.getId(),
                 thumbnail: mediaData.thumbnail,
                 type: mediaData.type,
                 filename: mediaData.filename,
                 duration: mediaData.duration,
-                status: RendleyStore.MediaDataStatusEnum.READY,
+                status: MediaDataStatusEnum.READY,
             });
         };
         this.handleLibraryError = (payload) => {
@@ -730,11 +718,11 @@ class RendleyBridge {
     async init(options) {
         try {
             this.setupEventListeners();
-            ApplicationStore.ApplicationStore.setTitlesPath(options.titlesPath);
-            ApplicationStore.ApplicationStore.setSubtitleStylesPath(options.subtitlesStylesPath);
+            ApplicationStore.setTitlesPath(options.titlesPath);
+            ApplicationStore.setSubtitleStylesPath(options.subtitlesStylesPath);
             // Load fonts in the background
             await Promise.all(fontSources.map(async ({ family, cssUrl }) => {
-                return RendleyStore.Engine.getInstance().getFontRegistry().loadFromCssUrl(family, cssUrl);
+                return Engine.getInstance().getFontRegistry().loadFromCssUrl(family, cssUrl);
             }));
             const transitionsRoot = options.transitionsPath;
             const filtersRoot = options.filtersPath;
@@ -752,7 +740,7 @@ class RendleyBridge {
                         shaderUrl: transitionsRoot + transition.path + "shader.glsl",
                     };
                 });
-                ApplicationStore.ApplicationStore.setTransitions(arrayToMap(transitions, "id"));
+                ApplicationStore.setTransitions(arrayToMap(transitions, "id"));
             });
             // Get filter list
             fetch(filtersRoot + "filters.json")
@@ -766,7 +754,7 @@ class RendleyBridge {
                         lutUrl: filtersRoot + filter.path + "lut.png",
                     };
                 });
-                ApplicationStore.ApplicationStore.setFilters(arrayToMap(filters, "id"));
+                ApplicationStore.setFilters(arrayToMap(filters, "id"));
             });
             // Get Effect list
             fetch(effectsRoot + "effects.json")
@@ -781,46 +769,46 @@ class RendleyBridge {
                         shaderUrl: effectsRoot + effect.path + "shader.glsl",
                     };
                 });
-                ApplicationStore.ApplicationStore.setEffects(arrayToMap(effects, "id"));
+                ApplicationStore.setEffects(arrayToMap(effects, "id"));
             });
         }
         finally {
-            ApplicationStore.ApplicationStore.setIsLoading(false);
+            ApplicationStore.setIsLoading(false);
         }
         // TODO: Remove on production!
-        window.engine = RendleyStore.Engine.getInstance();
+        window.engine = Engine.getInstance();
     }
     setupEventListeners() {
-        const events = RendleyStore.Engine.getInstance().events;
-        events.on(RendleyStore.EventsEnum.PLAYING, this.handlePlaying);
-        events.on(RendleyStore.EventsEnum.TIME, this.handleTime);
-        events.on(RendleyStore.EventsEnum.READY, this.handleReady);
-        events.on(RendleyStore.EventsEnum.DISPLAY_BACKGROUND_UPDATED, this.handleBackgroundUpdated);
-        events.on(RendleyStore.EventsEnum.DISPLAY_RESOLUTION_UPDATED, this.handleResolutionUpdated);
-        events.on(RendleyStore.EventsEnum.LAYER_ADDED, this.handleLayerAdded);
-        events.on(RendleyStore.EventsEnum.LAYER_REMOVED, this.handleLayerRemoved);
-        events.on(RendleyStore.EventsEnum.LAYER_UPDATED, this.handleLayerUpdated);
-        events.on(RendleyStore.EventsEnum.LAYERS_ORDER_UPDATED, this.handleLayersOrderUpdated);
-        events.on(RendleyStore.EventsEnum.TRANSITION_ADDED, this.handleAddTransition);
-        events.on(RendleyStore.EventsEnum.TRANSITION_REMOVED, this.handleRemoveTransition);
-        events.on(RendleyStore.EventsEnum.CLIP_ADDED, this.handleClipAdded);
-        events.on(RendleyStore.EventsEnum.CLIP_REMOVED, this.handleClipRemoved);
-        events.on(RendleyStore.EventsEnum.CLIP_UPDATED, this.handleClipUpdated);
-        events.on(RendleyStore.EventsEnum.CLIP_UPDATED_TEXT, this.handleClipUpdatedText);
-        events.on(RendleyStore.EventsEnum.CLIP_STYLE_UPDATED, this.handleClipStyleUpdated);
-        events.on(RendleyStore.EventsEnum.CLIP_EFFECT_ADDED, this.handleClipEffectAdded);
-        events.on(RendleyStore.EventsEnum.CLIP_EFFECT_REMOVED, this.handleClipEffectRemoved);
-        events.on(RendleyStore.EventsEnum.CLIP_FILTER_ADDED, this.handleClipFilterAdded);
-        events.on(RendleyStore.EventsEnum.CLIP_FILTER_REMOVED, this.handleClipFilterRemoved);
-        events.on(RendleyStore.EventsEnum.CLIP_ERROR, this.handleClipError);
-        events.on(RendleyStore.EventsEnum.LIBRARY_ADDED, this.handleLibraryAdded);
-        events.on(RendleyStore.EventsEnum.LIBRARY_REMOVED, this.handleLibraryRemoved);
-        events.on(RendleyStore.EventsEnum.LIBRARY_ERROR, this.handleLibraryError);
-        events.on(RendleyStore.EventsEnum.LIBRARY_MEDIA_UPDATED, this.handleLibraryMediaUpdated);
-        events.on(RendleyStore.EventsEnum.LIBRARY_REPLACED, this.handleLibraryMediaReplaced);
+        const events = Engine.getInstance().events;
+        events.on(EventsEnum.PLAYING, this.handlePlaying);
+        events.on(EventsEnum.TIME, this.handleTime);
+        events.on(EventsEnum.READY, this.handleReady);
+        events.on(EventsEnum.DISPLAY_BACKGROUND_UPDATED, this.handleBackgroundUpdated);
+        events.on(EventsEnum.DISPLAY_RESOLUTION_UPDATED, this.handleResolutionUpdated);
+        events.on(EventsEnum.LAYER_ADDED, this.handleLayerAdded);
+        events.on(EventsEnum.LAYER_REMOVED, this.handleLayerRemoved);
+        events.on(EventsEnum.LAYER_UPDATED, this.handleLayerUpdated);
+        events.on(EventsEnum.LAYERS_ORDER_UPDATED, this.handleLayersOrderUpdated);
+        events.on(EventsEnum.TRANSITION_ADDED, this.handleAddTransition);
+        events.on(EventsEnum.TRANSITION_REMOVED, this.handleRemoveTransition);
+        events.on(EventsEnum.CLIP_ADDED, this.handleClipAdded);
+        events.on(EventsEnum.CLIP_REMOVED, this.handleClipRemoved);
+        events.on(EventsEnum.CLIP_UPDATED, this.handleClipUpdated);
+        events.on(EventsEnum.CLIP_UPDATED_TEXT, this.handleClipUpdatedText);
+        events.on(EventsEnum.CLIP_STYLE_UPDATED, this.handleClipStyleUpdated);
+        events.on(EventsEnum.CLIP_EFFECT_ADDED, this.handleClipEffectAdded);
+        events.on(EventsEnum.CLIP_EFFECT_REMOVED, this.handleClipEffectRemoved);
+        events.on(EventsEnum.CLIP_FILTER_ADDED, this.handleClipFilterAdded);
+        events.on(EventsEnum.CLIP_FILTER_REMOVED, this.handleClipFilterRemoved);
+        events.on(EventsEnum.CLIP_ERROR, this.handleClipError);
+        events.on(EventsEnum.LIBRARY_ADDED, this.handleLibraryAdded);
+        events.on(EventsEnum.LIBRARY_REMOVED, this.handleLibraryRemoved);
+        events.on(EventsEnum.LIBRARY_ERROR, this.handleLibraryError);
+        events.on(EventsEnum.LIBRARY_MEDIA_UPDATED, this.handleLibraryMediaUpdated);
+        events.on(EventsEnum.LIBRARY_REPLACED, this.handleLibraryMediaReplaced);
     }
     destroy() {
-        RendleyStore.Engine.getInstance().events.removeAllListeners();
+        Engine.getInstance().events.removeAllListeners();
     }
 }
 const RendleyBridge$1 = new RendleyBridge();
@@ -835,7 +823,7 @@ function getShadowRoot() {
 }
 
 function getCanvasElement() {
-    return getShadowRoot().getElementById(RendleyStore.CANVAS_ID);
+    return getShadowRoot().getElementById(CANVAS_ID);
 }
 
 function isMobile() {
@@ -845,7 +833,7 @@ function isMobile() {
 class SidebarStoreInstance {
     constructor() {
         this.activeItemKey = isMobile() ? null : "stock";
-        ApplicationStore.Tn(this);
+        Tn(this);
     }
     setActiveItemKey(id) {
         this.activeItemKey = id;
@@ -860,7 +848,7 @@ class WindowStoreInstance {
     constructor() {
         this.resolution = [window.innerWidth, window.innerHeight];
         this.canvasResolution = [0, 0];
-        ApplicationStore.Tn(this);
+        Tn(this);
     }
     setResolution(resolution) {
         this.resolution = resolution;
@@ -877,23 +865,23 @@ const WindowStore = new WindowStoreInstance();
 
 const RendleyVideoEditor = class {
     constructor(hostRef) {
-        index.registerInstance(this, hostRef);
-        this.onReady = index.createEvent(this, "onReady", 7);
-        this.onError = index.createEvent(this, "onError", 7);
-        this.onRenderSuccess = index.createEvent(this, "onRenderSuccess", 7);
-        this.onRenderError = index.createEvent(this, "onRenderError", 7);
-        this.theme = ApplicationStore.ApplicationStore.theme;
+        registerInstance(this, hostRef);
+        this.onReady = createEvent(this, "onReady", 7);
+        this.onError = createEvent(this, "onError", 7);
+        this.onRenderSuccess = createEvent(this, "onRenderSuccess", 7);
+        this.onRenderError = createEvent(this, "onRenderError", 7);
+        this.theme = ApplicationStore.theme;
         this.licensename = undefined;
         this.licensekey = undefined;
         this.pexelsapikey = undefined;
         this.giphyapikey = undefined;
-        this.filtersPath = RendleyStore.FILTERS_PATH_CDN;
-        this.effectsPath = RendleyStore.EFFECTS_PATH_CDN;
-        this.transitionsPath = RendleyStore.TRANSITIONS_PATH_CDN;
-        this.titlesPath = RendleyStore.TITLES_PATH_CDN;
-        this.subtitlesStylesPath = RendleyStore.SUBTITLES_STYLES_PATH_CDN;
-        this.isLoading = ApplicationStore.ApplicationStore.isLoading;
-        this.isRendering = ApplicationStore.ApplicationStore.isRendering;
+        this.filtersPath = FILTERS_PATH_CDN;
+        this.effectsPath = EFFECTS_PATH_CDN;
+        this.transitionsPath = TRANSITIONS_PATH_CDN;
+        this.titlesPath = TITLES_PATH_CDN;
+        this.subtitlesStylesPath = SUBTITLES_STYLES_PATH_CDN;
+        this.isLoading = ApplicationStore.isLoading;
+        this.isRendering = ApplicationStore.isRendering;
     }
     componentWillLoad() {
         if (this.pexelsapikey && this.giphyapikey) {
@@ -903,20 +891,20 @@ const RendleyVideoEditor = class {
             });
         }
         ShortcutService.getInstance().init();
-        ApplicationStore.ApplicationStore.setTheme(this.theme);
-        this.disposeAutorun = ApplicationStore.It(() => {
+        ApplicationStore.setTheme(this.theme);
+        this.disposeAutorun = It(() => {
             var _a, _b, _c;
-            this.isLoading = ApplicationStore.ApplicationStore.isLoading;
-            this.isRendering = ApplicationStore.ApplicationStore.isRendering;
-            const renderSuccessBlobUrl = RendleyStore.RendleyStore.render.blobUrl;
-            const renderErrorMessage = RendleyStore.RendleyStore.render.error;
+            this.isLoading = ApplicationStore.isLoading;
+            this.isRendering = ApplicationStore.isRendering;
+            const renderSuccessBlobUrl = RendleyStore.render.blobUrl;
+            const renderErrorMessage = RendleyStore.render.error;
             if (renderSuccessBlobUrl) {
                 (_a = this.onRenderSuccess) === null || _a === void 0 ? void 0 : _a.emit(renderSuccessBlobUrl);
             }
             if (renderErrorMessage) {
                 (_b = this.onRenderError) === null || _b === void 0 ? void 0 : _b.emit(renderErrorMessage);
             }
-            (_c = this.el) === null || _c === void 0 ? void 0 : _c.setAttribute("theme", ApplicationStore.ApplicationStore.theme);
+            (_c = this.el) === null || _c === void 0 ? void 0 : _c.setAttribute("theme", ApplicationStore.theme);
         });
     }
     componentDidLoad() {
@@ -931,12 +919,12 @@ const RendleyVideoEditor = class {
         ShortcutService.getInstance().destroy();
         StockMediaService.getInstance().destroy();
         RendleyBridge$1.destroy();
-        await RendleyStore.Engine.getInstance().destroy(true);
-        ApplicationStore.ApplicationStore.reset();
+        await Engine.getInstance().destroy(true);
+        ApplicationStore.reset();
         ContextMenuStore.reset();
-        RendleyStore.RendleyStore.reset();
+        RendleyStore.reset();
         SidebarStore.reset();
-        TimelineStore.TimelineStore.reset();
+        TimelineStore.reset();
         WindowStore.reset();
     }
     async init() {
@@ -949,7 +937,7 @@ const RendleyVideoEditor = class {
                     licenseKey: this.licensekey,
                 };
             }
-            await RendleyService.RendleyService.init({
+            await RendleyService.init({
                 display: {
                     width: 1920,
                     height: 1080,
@@ -976,10 +964,10 @@ const RendleyVideoEditor = class {
         return Promise.resolve(this.el);
     }
     async getEngine() {
-        return RendleyStore.Engine;
+        return Engine;
     }
     async handleDropFiles(files) {
-        const library = RendleyStore.Engine.getInstance().getLibrary();
+        const library = Engine.getInstance().getLibrary();
         const promises = [];
         for (let i = 0; i < files.length; i++) {
             promises.push(library.addMedia(files[i]));
@@ -987,17 +975,9 @@ const RendleyVideoEditor = class {
         await Promise.all(promises);
     }
     render() {
-        return (index.h(index.Host, { key: 'f1dd25bceaae89261248afb473818ab259bbd984' }, index.h("div", { key: 'ecf98b4b0f15d4c10a5e5fab123584075517930d', class: clsx.clsx("relative w-ful h-full") }, this.isLoading && index.h("ve-loading-layout", { key: '9fb73c19fe775eba03112019bc8bf3f7884799d9' }), this.isRendering && index.h("ve-rendering-layout", { key: '59f286597653ab2d94ffe7e09ca528ffc9350fea' }), index.h("ve-layout", { key: 'a50482294ccc873a1ca68df78a3664d1ccb4aa6c', onDropFiles: this.handleDropFiles }, index.h("ve-composition", { key: '8c07a2cfcc8ee002736bf9c6667cff7de84ccaee', slot: "rendley-container" }), index.h("ve-timeline", { key: 'c217ccdc0bdc2287bef07e55fbcfbe970b7f0982', slot: "timeline" })), index.h("ve-context-menu", { key: '3327458ffc6648d3a788dbf8feee85d5be0a0030' }))));
+        return (h(Host, { key: 'f1dd25bceaae89261248afb473818ab259bbd984' }, h("div", { key: 'ecf98b4b0f15d4c10a5e5fab123584075517930d', class: clsx("relative w-ful h-full") }, this.isLoading && h("ve-loading-layout", { key: '9fb73c19fe775eba03112019bc8bf3f7884799d9' }), this.isRendering && h("ve-rendering-layout", { key: '59f286597653ab2d94ffe7e09ca528ffc9350fea' }), h("ve-layout", { key: 'a50482294ccc873a1ca68df78a3664d1ccb4aa6c', onDropFiles: this.handleDropFiles }, h("ve-composition", { key: '8c07a2cfcc8ee002736bf9c6667cff7de84ccaee', slot: "rendley-container" }), h("ve-timeline", { key: 'c217ccdc0bdc2287bef07e55fbcfbe970b7f0982', slot: "timeline" })), h("ve-context-menu", { key: '3327458ffc6648d3a788dbf8feee85d5be0a0030' }))));
     }
-    get el() { return index.getElement(this); }
+    get el() { return getElement(this); }
 };
 
-exports.ContextMenuStore = ContextMenuStore;
-exports.RendleyVideoEditor = RendleyVideoEditor;
-exports.SidebarStore = SidebarStore;
-exports.StockMediaService = StockMediaService;
-exports.WindowStore = WindowStore;
-exports.getCanvasElement = getCanvasElement;
-exports.getDomRoot = getDomRoot;
-exports.getShadowRoot = getShadowRoot;
-exports.updateAdjacency = updateAdjacency;
+export { ContextMenuStore as C, RendleyVideoEditor as R, SidebarStore as S, WindowStore as W, getShadowRoot as a, getCanvasElement as b, StockMediaService as c, getDomRoot as g, updateAdjacency as u };

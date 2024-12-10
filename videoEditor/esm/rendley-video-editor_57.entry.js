@@ -1,5 +1,5 @@
-import { g as getDomRoot, u as updateAdjacency, a as getShadowRoot$2, W as WindowStore, b as getCanvasElement, C as ContextMenuStore, S as SidebarStore, c as StockMediaService } from './rendley-video-editor-95d60b3c.js';
-export { R as rendley_video_editor } from './rendley-video-editor-95d60b3c.js';
+import { g as getDomRoot, u as updateAdjacency, a as getShadowRoot$2, W as WindowStore, b as getCanvasElement, C as ContextMenuStore, S as SidebarStore, c as StockMediaService } from './rendley-video-editor-6a2f9ee5.js';
+export { R as rendley_video_editor } from './rendley-video-editor-6a2f9ee5.js';
 import { h, r as registerInstance, c as createEvent, F as Fragment, H as Host, g as getElement } from './index-f9f850bb.js';
 import { t } from './translation-e53f3050.js';
 import { I as It, K as Kt, A as ApplicationStore } from './ApplicationStore-824bdfff.js';

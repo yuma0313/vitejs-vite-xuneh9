@@ -2,7 +2,7 @@
 
 Object.defineProperty(exports, '__esModule', { value: true });
 
-const rendleyVideoEditor = require('./rendley-video-editor-843bf983.js');
+const rendleyVideoEditor = require('./rendley-video-editor-5b73d2a0.js');
 require('./index-2d7e747d.js');
 require('./RendleyStore-63f6242b.js');
 require('./ApplicationStore-a449587b.js');
